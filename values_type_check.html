@@ -7,395 +7,104 @@
 <meta name="description" content="アノトキの価値観タイプチェック試作版。もしもの医療で大切にしたいことや、まだ分からないことを整理します。">
 <title>アノトキ｜価値観タイプチェック（試作版）</title>
 <style>
-:root{
-  --ink:#203b4b;--muted:#6f818c;--navy:#17466e;--teal:#397f7d;--mint:#eaf6f3;
-  --paper:#fffefb;--line:#dce8e6;--soft:#f6faf9;--accent:#dfeee8;--shadow:0 18px 46px rgba(31,74,94,.10);
-}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:linear-gradient(180deg,#f4fbfa 0,#fffefb 42%,#f8faf9 100%);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Noto Sans JP","Yu Gothic",Meiryo,sans-serif;line-height:1.7;letter-spacing:.015em}
-a{color:inherit}
-button{font:inherit}
-.shell{width:min(900px,calc(100% - 28px));margin:0 auto;padding:26px 0 64px}
-.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px}
-.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--navy)}
-.brand-mark{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,#d9eee9,#f9f1dc);display:grid;place-items:center;font-family:Georgia,serif;font-size:19px;box-shadow:0 8px 20px rgba(31,74,94,.08)}
-.brand b{font-family:"Yu Mincho","Hiragino Mincho ProN",serif;letter-spacing:.12em;font-weight:600}
-.home-link{font-size:12px;text-decoration:none;color:#56717e;border:1px solid #dce7e7;background:rgba(255,255,255,.75);border-radius:999px;padding:8px 13px}
-.hero{background:rgba(255,255,255,.84);border:1px solid rgba(218,232,229,.95);border-radius:28px;padding:38px 32px;box-shadow:var(--shadow);text-align:center}
-.badge{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;background:#edf7f4;color:#4a7774;font-size:11px;font-weight:800;letter-spacing:.08em}
-.hero h1{font-family:"Yu Mincho","Hiragino Mincho ProN",serif;font-size:clamp(28px,6vw,44px);line-height:1.45;color:#1d506d;margin:13px 0 10px;font-weight:500;letter-spacing:.07em}
-.hero .lead{font-size:14px;color:#59717d;margin:0 auto;max-width:650px}
-.hero .note{margin:22px auto 0;max-width:690px;padding:14px 16px;border-radius:16px;background:#f7faf9;color:#687b84;font-size:12px;text-align:left;border:1px solid #e5eeec}
-.start-btn,.primary-btn{appearance:none;border:0;border-radius:999px;background:linear-gradient(180deg,#22658b,#184b70);color:#fff;font-weight:800;letter-spacing:.05em;cursor:pointer;box-shadow:0 12px 26px rgba(24,75,112,.22);transition:.2s}
-.start-btn{margin-top:24px;padding:14px 30px;font-size:15px}
-.start-btn:hover,.primary-btn:hover{transform:translateY(-1px)}
-#quiz{display:none}
-.progress-wrap{margin:20px 0 14px}
-.progress-head{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#76878e;margin-bottom:8px}
-.progress-track{height:8px;border-radius:999px;background:#e8efee;overflow:hidden}
-.progress-bar{height:100%;width:0;background:linear-gradient(90deg,#7db7aa,#397f7d);border-radius:999px;transition:width .25s ease}
-.card{background:#fff;border:1px solid #dfe9e7;border-radius:24px;padding:30px;box-shadow:var(--shadow)}
-.section-kicker{color:#5b8782;font-size:11px;font-weight:800;letter-spacing:.08em;margin-bottom:7px}
-.qnum{font-size:11px;color:#86959b;margin-bottom:5px}
-.question{font-size:clamp(19px,4vw,25px);line-height:1.55;margin:0 0 10px;color:#244858;font-weight:750}
-.question-note{margin:0 0 18px;font-size:12px;color:#7c8b91}
-.options{display:grid;gap:10px}
-.option{width:100%;text-align:left;appearance:none;border:1px solid #dbe7e5;border-radius:16px;background:#fcfefd;color:#294b59;padding:14px 16px;cursor:pointer;transition:.16s;position:relative}
-.option:hover{border-color:#a8c9c3;background:#f5fbf9}
-.option.selected{border-color:#4b9589;background:#edf8f5;box-shadow:inset 0 0 0 1px #4b9589}
-.option strong{display:inline-block;min-width:28px;color:#397f7d}
-.option.small{font-size:13px;color:#5f737d;background:#fafcfb}
-.navrow{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:22px}
-.navrow button{appearance:none;border-radius:999px;padding:11px 18px;cursor:pointer}
-.back-btn{border:1px solid #dce6e5;background:#fff;color:#607780}
-.next-btn{border:0;background:#1c5c80;color:#fff;font-weight:800;min-width:110px}
-.next-btn:disabled{opacity:.38;cursor:not-allowed}
-.rank-help{padding:12px 14px;border-radius:14px;background:#f6faf9;border:1px solid #e2ece9;color:#657a82;font-size:12px;margin:0 0 15px}
-.value-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
-.value-option{appearance:none;border:1px solid #dbe7e5;background:#fff;border-radius:15px;padding:13px 12px;text-align:left;color:#35545f;cursor:pointer;min-height:64px;position:relative}
-.value-option:hover{background:#f7fbfa}
-.value-option.selected{border-color:#4f968c;background:#edf8f5;padding-left:48px}
-.rank-badge{display:none;position:absolute;left:12px;top:50%;transform:translateY(-50%);width:27px;height:27px;border-radius:50%;background:#397f7d;color:white;font-size:12px;font-weight:900;place-items:center}
-.value-option.selected .rank-badge{display:grid}
-.error{display:none;color:#a34d46;background:#fff5f3;border:1px solid #f0d8d4;border-radius:12px;padding:9px 12px;font-size:12px;margin-top:12px}
-#result{display:none}
-.result-card{background:#fff;border:1px solid #dde8e6;border-radius:28px;padding:34px;box-shadow:var(--shadow)}
-.result-top{text-align:center}
-.animal{font-size:78px;line-height:1;margin:6px 0 12px;filter:drop-shadow(0 7px 10px rgba(42,82,94,.09))}
-.result-top h2{font-family:"Yu Mincho","Hiragino Mincho ProN",serif;color:#1e506b;font-size:clamp(28px,6vw,42px);margin:0 0 8px;font-weight:600;letter-spacing:.04em}
-.result-sub{max-width:650px;margin:0 auto;color:#59727d;font-size:14px}
-.soft-alert{margin:20px auto 0;padding:14px 16px;border-radius:16px;background:#f6faf9;border:1px solid #e1ebe9;color:#627981;font-size:12px;max-width:680px}
-.result-section{margin-top:28px;padding-top:24px;border-top:1px solid #e7eeec}
-.result-section h3{font-family:"Yu Mincho","Hiragino Mincho ProN",serif;font-weight:600;color:#28566b;margin:0 0 13px;font-size:18px}
-.axis-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.axis{border-radius:16px;background:#f7faf9;border:1px solid #e2ebe9;padding:14px;text-align:center}
-.axis small{display:block;color:#839198;font-size:10px;margin-bottom:4px}.axis b{font-size:13px;color:#345b66}
-.values-list{display:grid;gap:9px}
-.value-rank{display:flex;align-items:center;gap:10px;border-radius:15px;background:#f8fbfa;border:1px solid #e1ebe9;padding:11px 13px}
-.medal{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:#e8f4f0;font-weight:900;color:#397f7d;flex:0 0 auto}
-.readiness{padding:17px;border-radius:17px;background:linear-gradient(135deg,#f0f8f5,#fbf7ec);border:1px solid #dfeae5}
-.readiness b{display:block;color:#315f67;margin-bottom:4px}.readiness p{margin:0;color:#667c84;font-size:13px}
-.meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}.meta-chip{padding:12px;border-radius:14px;border:1px solid #e2eae8;background:#fbfcfc;font-size:12px;color:#647982}
-.actions{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}.actions a,.actions button{display:flex;align-items:center;justify-content:center;min-height:48px;border-radius:15px;text-decoration:none;border:1px solid #d8e5e3;background:#fff;color:#315f70;font-weight:800;font-size:12px;padding:10px;cursor:pointer}.actions .accent{background:#1c5c80;color:#fff;border-color:#1c5c80}
-.disclaimer{margin-top:26px;color:#859298;font-size:10px;line-height:1.7}
-.restart{display:block;margin:22px auto 0;border:0;background:transparent;color:#617982;text-decoration:underline;cursor:pointer}
-@media(max-width:650px){.shell{width:min(100% - 18px,900px);padding-top:14px}.hero,.card,.result-card{padding:23px 18px;border-radius:21px}.topbar{margin-bottom:12px}.value-grid,.axis-grid,.meta-grid,.actions{grid-template-columns:1fr}.question{font-size:19px}.option{padding:13px}.animal{font-size:66px}}
-@media print{body{background:white}.topbar,.hero,#quiz,.actions,.restart{display:none!important}.shell{width:100%;padding:0}.result-card{box-shadow:none;border:0}.result-section{break-inside:avoid}}
+:root{--ink:#203b4b;--muted:#6f818c;--navy:#17466e;--teal:#397f7d;--mint:#eaf6f3;--paper:#fffefb;--line:#dce8e6;--soft:#f6faf9;--accent:#dfeee8;--shadow:0 18px 46px rgba(31,74,94,.10)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:linear-gradient(180deg,#f4fbfa 0,#fffefb 42%,#f8faf9 100%);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Noto Sans JP","Yu Gothic",Meiryo,sans-serif;line-height:1.7;letter-spacing:.015em}a{color:inherit}button{font:inherit}
+.shell{width:min(900px,calc(100% - 28px));margin:0 auto;padding:26px 0 64px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px}.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--navy)}.brand-mark{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,#d9eee9,#f9f1dc);display:grid;place-items:center;font-family:Georgia,serif;font-size:19px;box-shadow:0 8px 20px rgba(31,74,94,.08)}.brand b{font-family:"Yu Mincho","Hiragino Mincho ProN",serif;letter-spacing:.12em;font-weight:600}.home-link{font-size:12px;text-decoration:none;color:#56717e;border:1px solid #dce7e7;background:rgba(255,255,255,.75);border-radius:999px;padding:8px 13px}
+.hero{background:rgba(255,255,255,.84);border:1px solid rgba(218,232,229,.95);border-radius:28px;padding:38px 32px;box-shadow:var(--shadow);text-align:center}.badge{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;background:#edf7f4;color:#4a7774;font-size:11px;font-weight:800;letter-spacing:.08em}.hero h1{font-family:"Yu Mincho","Hiragino Mincho ProN",serif;font-size:clamp(28px,6vw,44px);line-height:1.45;color:#1d506d;margin:13px 0 10px;font-weight:500;letter-spacing:.07em}.hero .lead{font-size:14px;color:#59717d;margin:0 auto;max-width:650px}.hero .note{margin:22px auto 0;max-width:690px;padding:14px 16px;border-radius:16px;background:#f7faf9;color:#687b84;font-size:12px;text-align:left;border:1px solid #e5eeec}.start-btn{appearance:none;border:0;border-radius:999px;background:linear-gradient(180deg,#22658b,#184b70);color:#fff;font-weight:800;letter-spacing:.05em;cursor:pointer;box-shadow:0 12px 26px rgba(24,75,112,.22);transition:.2s;margin-top:24px;padding:14px 30px;font-size:15px}.start-btn:hover{transform:translateY(-1px)}
+#quiz,#result{display:none}.progress-wrap{margin:20px 0 14px}.progress-head{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#76878e;margin-bottom:8px}.progress-track{height:8px;border-radius:999px;background:#e8efee;overflow:hidden}.progress-bar{height:100%;width:0;background:linear-gradient(90deg,#7db7aa,#397f7d);border-radius:999px;transition:width .25s ease}.card{background:#fff;border:1px solid #dfe9e7;border-radius:24px;padding:30px;box-shadow:var(--shadow)}.section-kicker{color:#5b8782;font-size:11px;font-weight:800;letter-spacing:.08em;margin-bottom:7px}.qnum{font-size:11px;color:#86959b;margin-bottom:5px}.question{font-size:clamp(19px,4vw,25px);line-height:1.55;margin:0 0 10px;color:#244858;font-weight:750}.question-note{margin:0 0 18px;font-size:12px;color:#7c8b91}.options{display:grid;gap:10px}.option{width:100%;text-align:left;appearance:none;border:1px solid #dbe7e5;border-radius:16px;background:#fcfefd;color:#294b59;padding:14px 16px;cursor:pointer;transition:.16s;position:relative}.option:hover{border-color:#a8c9c3;background:#f5fbf9}.option.selected{border-color:#4b9589;background:#edf8f5;box-shadow:inset 0 0 0 1px #4b9589}.option strong{display:inline-block;min-width:28px;color:#397f7d}.option.small{font-size:13px;color:#5f737d;background:#fafcfb}.navrow{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:22px}.navrow button{appearance:none;border-radius:999px;padding:11px 18px;cursor:pointer}.back-btn{border:1px solid #dce6e5;background:#fff;color:#607780}.next-btn{border:0;background:#1c5c80;color:#fff;font-weight:800;min-width:110px}.next-btn:disabled{opacity:.38;cursor:not-allowed}
+.rank-help{padding:12px 14px;border-radius:14px;background:#f6faf9;border:1px solid #e2ece9;color:#657a82;font-size:12px;margin:0 0 15px}.value-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.value-option{appearance:none;border:1px solid #dbe7e5;background:#fff;border-radius:15px;padding:13px 12px;text-align:left;color:#35545f;cursor:pointer;min-height:64px;position:relative}.value-option:hover{background:#f7fbfa}.value-option.selected{border-color:#4f968c;background:#edf8f5;padding-left:48px}.rank-badge{display:none;position:absolute;left:12px;top:50%;transform:translateY(-50%);width:27px;height:27px;border-radius:50%;background:#397f7d;color:white;font-size:12px;font-weight:900;place-items:center}.value-option.selected .rank-badge{display:grid}.error{display:none;color:#a34d46;background:#fff5f3;border:1px solid #f0d8d4;border-radius:12px;padding:9px 12px;font-size:12px;margin-top:12px}
+.result-card{background:#fff;border:1px solid #dde8e6;border-radius:28px;padding:34px;box-shadow:var(--shadow)}.result-top{text-align:center}.result-visual{display:none;width:min(100%,520px);margin:16px auto 18px}.result-visual img{display:block;width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:30px;box-shadow:0 15px 34px rgba(31,74,94,.13);background:#f8fbfa}.animal{font-size:78px;line-height:1;margin:10px 0 12px;filter:drop-shadow(0 7px 10px rgba(42,82,94,.09))}.result-top h2{font-family:"Yu Mincho","Hiragino Mincho ProN",serif;color:#1e506b;font-size:clamp(28px,6vw,42px);margin:0 0 8px;font-weight:600;letter-spacing:.04em}.result-tagline{max-width:680px;margin:0 auto 10px;color:#315f70;font-weight:800;font-size:clamp(15px,3vw,19px)}.result-sub{max-width:650px;margin:0 auto;color:#59727d;font-size:14px}.soft-alert{margin:20px auto 0;padding:14px 16px;border-radius:16px;background:#f6faf9;border:1px solid #e1ebe9;color:#627981;font-size:12px;max-width:680px}.result-section{margin-top:28px;padding-top:24px;border-top:1px solid #e7eeec}.result-section h3{font-family:"Yu Mincho","Hiragino Mincho ProN",serif;font-weight:600;color:#28566b;margin:0 0 13px;font-size:18px}.axis-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.axis{border-radius:16px;background:#f7faf9;border:1px solid #e2ebe9;padding:14px;text-align:center}.axis small{display:block;color:#839198;font-size:10px;margin-bottom:4px}.axis b{font-size:13px;color:#345b66}.values-list{display:grid;gap:9px}.value-rank{display:flex;align-items:center;gap:10px;border-radius:15px;background:#f8fbfa;border:1px solid #e1ebe9;padding:11px 13px}.medal{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:#e8f4f0;font-weight:900;color:#397f7d;flex:0 0 auto}.readiness{padding:17px;border-radius:17px;background:linear-gradient(135deg,#f0f8f5,#fbf7ec);border:1px solid #dfeae5}.readiness b{display:block;color:#315f67;margin-bottom:4px}.readiness p{margin:0;color:#667c84;font-size:13px}.meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}.meta-chip{padding:12px;border-radius:14px;border:1px solid #e2eae8;background:#fbfcfc;font-size:12px;color:#647982}.actions{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}.actions a,.actions button{display:flex;align-items:center;justify-content:center;min-height:48px;border-radius:15px;text-decoration:none;border:1px solid #d8e5e3;background:#fff;color:#315f70;font-weight:800;font-size:12px;padding:10px;cursor:pointer}.actions .accent{background:#1c5c80;color:#fff;border-color:#1c5c80}.disclaimer{margin-top:26px;color:#859298;font-size:10px;line-height:1.7}.restart{display:block;margin:22px auto 0;border:0;background:transparent;color:#617982;text-decoration:underline;cursor:pointer}
+@media(max-width:650px){.shell{width:min(100% - 18px,900px);padding-top:14px}.hero,.card,.result-card{padding:23px 18px;border-radius:21px}.topbar{margin-bottom:12px}.value-grid,.axis-grid,.meta-grid,.actions{grid-template-columns:1fr}.question{font-size:19px}.option{padding:13px}.animal{font-size:66px}.result-visual{width:100%}.result-visual img{border-radius:22px}}
+@media print{body{background:white}.topbar,.hero,#quiz,.actions,.restart{display:none!important}.shell{width:100%;padding:0}.result-card{box-shadow:none;border:0}.result-section{break-inside:avoid}.result-visual{max-width:390px}}
 </style>
 </head>
 <body>
 <div class="shell">
-  <div class="topbar">
-    <a class="brand" href="index.html"><span class="brand-mark">A</span><b>アノトキ</b></a>
-    <a class="home-link" href="index.html">トップへ</a>
-  </div>
-
+  <div class="topbar"><a class="brand" href="index.html"><span class="brand-mark">A</span><b>アノトキ</b></a><a class="home-link" href="index.html">トップへ</a></div>
   <section class="hero" id="intro">
     <span class="badge">PROTOTYPE / v0</span>
     <h1>もしものとき、<br>あなたは何を大切にしたい？</h1>
     <p class="lead">16の質問から、今のあなたの「考え方の傾向」「大切にしたいこと」「まだ分からないこと」を整理します。</p>
-    <div class="note">
-      これは医学的な診断や、治療方針を決めるためのテストではありません。価値観は病気・年齢・生活・家族との関係などで変わります。<b>「状況による」「わからない」「今は考えたくない」も大切な回答です。</b><br>
-      回答内容はこの試作ページから外部へ送信・保存しません。
-    </div>
+    <div class="note">これは医学的な診断や、治療方針を決めるためのテストではありません。価値観は病気・年齢・生活・家族との関係などで変わります。<b>「状況による」「わからない」「今は考えたくない」も大切な回答です。</b><br>回答内容はこの試作ページから外部へ送信・保存しません。</div>
     <button class="start-btn" id="startBtn">はじめる　→</button>
   </section>
-
   <section id="quiz" aria-live="polite">
-    <div class="progress-wrap">
-      <div class="progress-head"><span id="progressLabel">1 / 16</span><span>価値観タイプチェック</span></div>
-      <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
-    </div>
-    <div class="card">
-      <div class="section-kicker" id="sectionKicker"></div>
-      <div class="qnum" id="qnum"></div>
-      <h2 class="question" id="question"></h2>
-      <p class="question-note" id="questionNote"></p>
-      <div id="questionBody"></div>
-      <div class="error" id="errorBox"></div>
-      <div class="navrow">
-        <button class="back-btn" id="backBtn">← 戻る</button>
-        <button class="next-btn" id="nextBtn">次へ →</button>
-      </div>
-    </div>
+    <div class="progress-wrap"><div class="progress-head"><span id="progressLabel">1 / 16</span><span>価値観タイプチェック</span></div><div class="progress-track"><div class="progress-bar" id="progressBar"></div></div></div>
+    <div class="card"><div class="section-kicker" id="sectionKicker"></div><div class="qnum" id="qnum"></div><h2 class="question" id="question"></h2><p class="question-note" id="questionNote"></p><div id="questionBody"></div><div class="error" id="errorBox"></div><div class="navrow"><button class="back-btn" id="backBtn">← 戻る</button><button class="next-btn" id="nextBtn">次へ →</button></div></div>
   </section>
-
   <section id="result" aria-live="polite">
     <div class="result-card">
       <div class="result-top">
         <span class="badge">YOUR CURRENT VALUES</span>
-        <div class="animal" id="resultAnimal">🐘</div>
+        <div class="result-visual" id="resultVisual"><img id="resultImage" src="" alt=""></div>
+        <div class="animal" id="resultAnimal">🌿</div>
         <h2 id="resultName"></h2>
+        <p class="result-tagline" id="resultTagline"></p>
         <p class="result-sub" id="resultDescription"></p>
         <div class="soft-alert" id="resultAlert"></div>
       </div>
-
-      <div class="result-section">
-        <h3>今のあなたの3つの傾向</h3>
-        <div class="axis-grid" id="axisGrid"></div>
-      </div>
-
-      <div class="result-section">
-        <h3>あなたが特に大切にしたいこと</h3>
-        <div class="values-list" id="valuesList"></div>
-      </div>
-
-      <div class="result-section">
-        <h3>今のあなたの現在地</h3>
-        <div class="readiness" id="readinessBox"></div>
-        <div class="meta-grid" id="metaGrid"></div>
-      </div>
-
-      <div class="result-section">
-        <h3>ここからできること</h3>
-        <div class="actions">
-          <a href="experience_read.html">みんなの体験を読んでみる</a>
-          <a href="family_decisions.html">家族と話すヒントを見る</a>
-          <a class="accent" href="decision_support.html">話し合いの準備をする</a>
-          <button id="shareBtn">結果を共有する</button>
-          <button id="printBtn">印刷・PDF保存</button>
-          <a href="index.html">アノトキのトップへ</a>
-        </div>
-      </div>
-
+      <div class="result-section"><h3>今のあなたの3つの傾向</h3><div class="axis-grid" id="axisGrid"></div></div>
+      <div class="result-section"><h3>あなたが特に大切にしたいこと</h3><div class="values-list" id="valuesList"></div></div>
+      <div class="result-section"><h3>今のあなたの現在地</h3><div class="readiness" id="readinessBox"></div><div class="meta-grid" id="metaGrid"></div></div>
+      <div class="result-section"><h3>ここからできること</h3><div class="actions"><a href="experience_read.html">みんなの体験を読んでみる</a><a href="family_decisions.html">家族と話すヒントを見る</a><a class="accent" href="decision_support.html">話し合いの準備をする</a><button id="shareBtn">結果を共有する</button><button id="printBtn">印刷・PDF保存</button><a href="index.html">アノトキのトップへ</a></div></div>
       <p class="disclaimer">※このページは試作版です。結果は「今の傾向」を整理するためのもので、治療の推奨、医療判断、ACPの完成を意味しません。実際の病気や治療については、主治医・看護師・医療ソーシャルワーカーなどと相談してください。</p>
       <button class="restart" id="restartBtn">もう一度やる</button>
     </div>
   </section>
 </div>
-
 <script>
-const standardOptions = [
-  {key:'A',label:''},{key:'B',label:''},
-  {key:'C',label:'状況による',small:true},
-  {key:'D',label:'わからない',small:true},
-  {key:'E',label:'今は考えたくない',small:true}
+const questions=[
+{section:'治療と暮らし',text:'負担の大きい治療を受けることで、半年ほど長く生きられる可能性があるとしたら？',note:'これは価値観を考えるための架空の例です。実際の治療効果を示す数字ではありません。',axis:'life',a:'負担があっても、長く生きられる可能性を選びたい',b:'半年短くなる可能性があっても、負担の少ない時間を選びたい'},
+{section:'治療と暮らし',text:'治療を続けることで、入退院や通院が増えて、外出・食事・趣味など普段の生活がかなり制限されるとしたら？',axis:'life',a:'生活が制限されても、できる治療は続けたい',b:'治療を減らしてでも、普段に近い生活を大切にしたい'},
+{section:'治療と暮らし',text:'効くかどうか分からない治療があります。治療にはある程度の負担があります。あなたなら？',axis:'life',a:'可能性があるなら、まず試してみたい',b:'効果がはっきりしないなら、負担を避けたい'},
+{section:'治療と暮らし',text:'次の2つなら、今の自分に近いのは？',axis:'life',a:'病院で過ごす時間が長くなっても、より長く生きられる可能性を選びたい',b:'寿命が短くなる可能性があっても、落ち着ける場所で普段に近く過ごしたい'},
+{section:'どう決めたい？',text:'自分の希望と、家族や医療者の意見が違ったら？',axis:'decision',a:'最後は自分の希望をより重くしてほしい',b:'自分の希望だけでなく、みんなで納得できる形を探したい'},
+{section:'どう決めたい？',text:'将来、自分で意思を伝えられなくなる可能性があります。今のうちにどうしたい？',axis:'decision',a:'自分の希望を、できるだけ具体的に残しておきたい',b:'大まかな希望だけ伝えて、その時の状況に合わせて家族や医療者に考えてほしい'},
+{section:'どう決めたい？',text:'家族や医療者と十分に話しても、最後まで意見がまとまらなかったら？',axis:'decision',a:'最後は、自分の希望をより重くしてほしい',b:'結論を急がず、みんなで納得できる方法をもう少し探したい'},
+{section:'どう決めたい？',text:'元気なときに残した希望と、実際に病気になったときの状況が大きく違っていたら？',axis:'decision',a:'元気なときに伝えた希望を、できるだけ重くしてほしい',b:'昔の希望も参考にしつつ、今の状況に合わせて柔軟に考えてほしい'},
+{section:'誰を頼りたい？',text:'自分だけでは決められない医療の選択に直面したら、まず誰と話したい？',axis:'support',a:'自分のことをよく知っている家族や身近な人',b:'病状や治療をよく知っている医療・介護の専門職'},
+{section:'誰を頼りたい？',text:'自分で意思を伝えられなくなり、希望もはっきり分からない場合、より頼りたいのは？',axis:'support',a:'普段の自分をよく知っている家族の「本人ならこう考えそう」という理解',b:'病状を知っている専門職の「医学的にはこう考えられる」という判断'},
+{section:'誰を頼りたい？',text:'家族と医療者の意見が違ったとき、まず詳しく聞いてみたいのは？',axis:'support',custom:[{key:'A',label:'家族が「本人にとってこれがいい」と考える理由'},{key:'B',label:'医療者が「医学的にはこれがいい」と考える理由'},{key:'C',label:'両方同じくらい聞きたい',small:true},{key:'D',label:'わからない',small:true},{key:'E',label:'今は考えたくない',small:true}]},
+{section:'誰を頼りたい？',text:'もし自分で決められず、誰かに判断を任せる必要があるとしたら？',axis:'support',a:'自分のことをよく知る家族や身近な人を中心に考えてほしい',b:'医療・介護の専門職を中心に、家族と相談して考えてほしい'},
+{section:'大切にしたいこと',kind:'values',text:'これからの医療や暮らしを考えるとき、特に大切にしたいものを3つ選んで、大切な順に並べてください。',note:'選んだ順に 1位・2位・3位 になります。選び直すときは、選択中の項目をもう一度押してください。'},
+{section:'今の現在地',kind:'single',text:'自分が大切にしたいことを、今どのくらい言葉にできますか？',custom:[{key:'A',label:'はっきり言える'},{key:'B',label:'なんとなく言える'},{key:'C',label:'考えてはいるけど、うまく言葉にできない'},{key:'D',label:'まだあまり考えたことがない'},{key:'E',label:'わからない'},{key:'F',label:'今は考えたくない'}]},
+{section:'今の現在地',kind:'single',text:'自分の考えを、家族や身近な人に話すことについて近いのは？',custom:[{key:'A',label:'すでに話したことがある'},{key:'B',label:'まだ話していないけど、話しておきたい'},{key:'C',label:'必要になったら話せばいいと思う'},{key:'D',label:'あまり話したくない'},{key:'E',label:'誰にも話したくない'},{key:'F',label:'わからない'}]},
+{section:'今の現在地',kind:'single',text:'「もしもの医療」について、今のあなたに一番近いのは？',custom:[{key:'A',label:'考えておきたいけど、何から始めればいいか分からない'},{key:'B',label:'ある程度考えていて、誰かと話したり準備したりしている'},{key:'C',label:'特に準備していないけど、その時になれば家族や医療者が分かってくれると思う'},{key:'D',label:'今はまだ考える必要を感じない／考えたくない'},{key:'E',label:'どれとも言えない'}]}
 ];
-
-const questions = [
-  {section:'治療と暮らし',text:'負担の大きい治療を受けることで、半年ほど長く生きられる可能性があるとしたら？',note:'これは価値観を考えるための架空の例です。実際の治療効果を示す数字ではありません。',axis:'life',a:'負担があっても、長く生きられる可能性を選びたい',b:'半年短くなる可能性があっても、負担の少ない時間を選びたい'},
-  {section:'治療と暮らし',text:'治療を続けることで、入退院や通院が増えて、外出・食事・趣味など普段の生活がかなり制限されるとしたら？',axis:'life',a:'生活が制限されても、できる治療は続けたい',b:'治療を減らしてでも、普段に近い生活を大切にしたい'},
-  {section:'治療と暮らし',text:'効くかどうか分からない治療があります。治療にはある程度の負担があります。あなたなら？',axis:'life',a:'可能性があるなら、まず試してみたい',b:'効果がはっきりしないなら、負担を避けたい'},
-  {section:'治療と暮らし',text:'次の2つなら、今の自分に近いのは？',axis:'life',a:'病院で過ごす時間が長くなっても、より長く生きられる可能性を選びたい',b:'寿命が短くなる可能性があっても、落ち着ける場所で普段に近く過ごしたい'},
-
-  {section:'どう決めたい？',text:'自分の希望と、家族や医療者の意見が違ったら？',axis:'decision',a:'最後は自分の希望をより重くしてほしい',b:'自分の希望だけでなく、みんなで納得できる形を探したい'},
-  {section:'どう決めたい？',text:'将来、自分で意思を伝えられなくなる可能性があります。今のうちにどうしたい？',axis:'decision',a:'自分の希望を、できるだけ具体的に残しておきたい',b:'大まかな希望だけ伝えて、その時の状況に合わせて家族や医療者に考えてほしい'},
-  {section:'どう決めたい？',text:'家族や医療者と十分に話しても、最後まで意見がまとまらなかったら？',axis:'decision',a:'最後は、自分の希望をより重くしてほしい',b:'結論を急がず、みんなで納得できる方法をもう少し探したい'},
-  {section:'どう決めたい？',text:'元気なときに残した希望と、実際に病気になったときの状況が大きく違っていたら？',axis:'decision',a:'元気なときに伝えた希望を、できるだけ重くしてほしい',b:'昔の希望も参考にしつつ、今の状況に合わせて柔軟に考えてほしい'},
-
-  {section:'誰を頼りたい？',text:'自分だけでは決められない医療の選択に直面したら、まず誰と話したい？',axis:'support',a:'自分のことをよく知っている家族や身近な人',b:'病状や治療をよく知っている医療・介護の専門職'},
-  {section:'誰を頼りたい？',text:'自分で意思を伝えられなくなり、希望もはっきり分からない場合、より頼りたいのは？',axis:'support',a:'普段の自分をよく知っている家族の「本人ならこう考えそう」という理解',b:'病状を知っている専門職の「医学的にはこう考えられる」という判断'},
-  {section:'誰を頼りたい？',text:'家族と医療者の意見が違ったとき、まず詳しく聞いてみたいのは？',axis:'support',custom:[
-    {key:'A',label:'家族が「本人にとってこれがいい」と考える理由'},
-    {key:'B',label:'医療者が「医学的にはこれがいい」と考える理由'},
-    {key:'C',label:'両方同じくらい聞きたい',small:true},
-    {key:'D',label:'わからない',small:true},
-    {key:'E',label:'今は考えたくない',small:true}
-  ]},
-  {section:'誰を頼りたい？',text:'もし自分で決められず、誰かに判断を任せる必要があるとしたら？',axis:'support',a:'自分のことをよく知る家族や身近な人を中心に考えてほしい',b:'医療・介護の専門職を中心に、家族と相談して考えてほしい'},
-
-  {section:'大切にしたいこと',kind:'values',text:'これからの医療や暮らしを考えるとき、特に大切にしたいものを3つ選んで、大切な順に並べてください。',note:'選んだ順に 1位・2位・3位 になります。選び直すときは、選択中の項目をもう一度押してください。'},
-  {section:'今の現在地',kind:'single',text:'自分が大切にしたいことを、今どのくらい言葉にできますか？',custom:[
-    {key:'A',label:'はっきり言える'},{key:'B',label:'なんとなく言える'},{key:'C',label:'考えてはいるけど、うまく言葉にできない'},
-    {key:'D',label:'まだあまり考えたことがない'},{key:'E',label:'わからない'},{key:'F',label:'今は考えたくない'}
-  ]},
-  {section:'今の現在地',kind:'single',text:'自分の考えを、家族や身近な人に話すことについて近いのは？',custom:[
-    {key:'A',label:'すでに話したことがある'},{key:'B',label:'まだ話していないけど、話しておきたい'},{key:'C',label:'必要になったら話せばいいと思う'},
-    {key:'D',label:'あまり話したくない'},{key:'E',label:'誰にも話したくない'},{key:'F',label:'わからない'}
-  ]},
-  {section:'今の現在地',kind:'single',text:'「もしもの医療」について、今のあなたに一番近いのは？',custom:[
-    {key:'A',label:'考えておきたいけど、何から始めればいいか分からない'},
-    {key:'B',label:'ある程度考えていて、誰かと話したり準備したりしている'},
-    {key:'C',label:'特に準備していないけど、その時になれば家族や医療者が分かってくれると思う'},
-    {key:'D',label:'今はまだ考える必要を感じない／考えたくない'},
-    {key:'E',label:'どれとも言えない'}
-  ]}
-];
-
-const values = [
-  '苦痛が少ないこと','自分らしく過ごせること','家族や大切な人と一緒に過ごせること','家族や周囲に負担をかけすぎないこと',
-  '自分でできることをできるだけ保つこと','希望や楽しみがあること','納得できる治療を十分に受けること','自分が落ち着ける場所で過ごすこと',
-  '信頼できる医療者と話せること','自然な経過を大切にすること','人生の整理や準備ができること','心の支えや安心があること'
-];
-
-const typeMap = {
-  '-1,1,1': {animal:'🐈',name:'マイペースねこ',desc:'自分らしい過ごし方を大切にしながら、家族や身近な人には自分の気持ちを分かっていてほしいタイプ。',watch:'自分の本音を大切にしつつ、家族への遠慮で希望を言えなくなっていないか確認してみてもよさそうです。'},
-  '1,1,1':  {animal:'🐦',name:'希望つなぐツル',desc:'できることがあるなら考えてみたい。自分の意思も、家族とのつながりも大切にしたいタイプ。',watch:'「どこまでの負担なら受け入れたいか」を言葉にすると、さらに話しやすくなりそうです。'},
-  '-1,1,-1':{animal:'🦉',name:'納得フクロウ',desc:'負担や過ごし方を大切にしつつ、専門家の説明を聞いて、自分で納得して考えたいタイプ。',watch:'情報を集めすぎて迷うときは、「自分が一番守りたいこと」に戻るのも一つです。'},
-  '1,1,-1': {animal:'🐬',name:'トライイルカ',desc:'治療の可能性や見通しを知ったうえで、専門家と対話しながら自分で選びたいタイプ。',watch:'「できること」だけでなく、その治療で生活がどう変わるかもセットで聞くと整理しやすくなります。'},
-  '-1,-1,1':{animal:'🐕',name:'よりそいイヌ',desc:'一人で決めるより、大切な人と支え合いながら、穏やかな道を一緒に考えたいタイプ。',watch:'家族の気持ちを大切にするほど、自分自身の希望が後ろに隠れないようにしてもよさそうです。'},
-  '1,-1,1': {animal:'🐘',name:'つながりゾウ',desc:'大切な人たちと相談しながら、できる可能性を一緒に探したいタイプ。',watch:'家族の「長くいてほしい」と本人の負担が違う方向を向くとき、何を優先したいか話せると安心です。'},
-  '-1,-1,-1':{animal:'🐢',name:'じっくりカメ',desc:'答えを急がず、専門家と相談しながら、無理の少ない道をじっくり考えたいタイプ。',watch:'周囲に任せる部分と、「これだけは大切」という自分の希望を分けておくと伝わりやすくなります。'},
-  '1,-1,-1': {animal:'🐎',name:'伴走ウマ',desc:'専門家や周囲と歩調を合わせながら、よりよい可能性を探して前に進みたいタイプ。',watch:'いろいろな意見があるときほど、「自分にとって何が一番大切か」を一度確認してみてもよさそうです。'}
+const values=['苦痛が少ないこと','自分らしく過ごせること','家族や大切な人と一緒に過ごせること','家族や周囲に負担をかけすぎないこと','自分でできることをできるだけ保つこと','希望や楽しみがあること','納得できる治療を十分に受けること','自分が落ち着ける場所で過ごすこと','信頼できる医療者と話せること','自然な経過を大切にすること','人生の整理や準備ができること','心の支えや安心があること'];
+const typeMap={
+'-1,1,1':{animal:'🐈',image:'assets/values-type/values-type-cat.png',name:'マイペースねこ',tagline:'自分のペースで。でも、大切な人には分かっていてほしい。',desc:'自分らしい過ごし方を大切にしながら、家族や身近な人には自分の気持ちを分かっていてほしいタイプ。',watch:'自分の本音を大切にしつつ、家族への遠慮で希望を言えなくなっていないか確認してみてもよさそうです。'},
+'1,1,1':{animal:'🐦',image:'assets/values-type/values-type-crane.png',name:'希望つなぐツル',tagline:'できる可能性を大切に。自分の意思も、家族とのつながりも。',desc:'できることがあるなら考えてみたい。自分の意思も、家族とのつながりも大切にしたいタイプ。',watch:'「どこまでの負担なら受け入れたいか」を言葉にすると、さらに話しやすくなりそうです。'},
+'-1,1,-1':{animal:'🦉',image:'assets/values-type/values-type-owl.png',name:'納得フクロウ',tagline:'ちゃんと知って、じっくり考えて、自分で納得して選びたい。',desc:'負担や過ごし方を大切にしつつ、専門家の説明を聞いて、自分で納得して考えたいタイプ。',watch:'情報を集めすぎて迷うときは、「自分が一番守りたいこと」に戻るのも一つです。'},
+'1,1,-1':{animal:'🐬',image:'assets/values-type/values-type-dolphin.png',name:'トライイルカ',tagline:'可能性を知って、自分で納得して前に進みたい。',desc:'治療の可能性や見通しを知ったうえで、専門家と対話しながら自分で選びたいタイプ。',watch:'「できること」だけでなく、その治療で生活がどう変わるかもセットで聞くと整理しやすくなります。'},
+'-1,-1,1':{animal:'🐕',image:'assets/values-type/values-type-dog.png',name:'よりそいイヌ',tagline:'一人で抱えず、大切な人と支え合って考えたい。',desc:'一人で決めるより、大切な人と支え合いながら、穏やかな道を一緒に考えたいタイプ。',watch:'家族の気持ちを大切にするほど、自分自身の希望が後ろに隠れないようにしてもよさそうです。'},
+'1,-1,1':{animal:'🐘',image:'assets/values-type/values-type-elephant.png',name:'つながりゾウ',tagline:'大切な人たちと一緒に、できる道を探したい。',desc:'大切な人たちと相談しながら、できる可能性を一緒に探したいタイプ。',watch:'家族の「長くいてほしい」と本人の負担が違う方向を向くとき、何を優先したいか話せると安心です。'},
+'-1,-1,-1':{animal:'🐢',image:'assets/values-type/values-type-turtle.png',name:'じっくりカメ',tagline:'急がず、無理せず、相談しながらじっくり考えたい。',desc:'答えを急がず、専門家と相談しながら、無理の少ない道をじっくり考えたいタイプ。',watch:'周囲に任せる部分と、「これだけは大切」という自分の希望を分けておくと伝わりやすくなります。'},
+'1,-1,-1':{animal:'🐎',image:'assets/values-type/values-type-horse.png',name:'伴走ウマ',tagline:'周囲と歩調を合わせながら、前に進みたい。',desc:'専門家や周囲と歩調を合わせながら、よりよい可能性を探して前に進みたいタイプ。',watch:'いろいろな意見があるときほど、「自分にとって何が一番大切か」を一度確認してみてもよさそうです。'}
 };
-
-const readinessMap = {
-  A:{title:'🌱 話したい・入口探し中',text:'考えておきたい気持ちはあるけれど、「何から始めればいい？」が今の壁かもしれません。'},
-  B:{title:'🧭 準備すすんでる',text:'すでに考えたり話したりする段階に進んでいます。状況が変わったときに、また見直せる余白を残しておくのも大切です。'},
-  C:{title:'☁️ なんとかなる派',text:'「その時になれば伝わる」と感じている段階です。大切な人が同じ理解をしているか、一度だけ確かめてみるのもよさそうです。'},
-  D:{title:'🌙 今はまだ',text:'今は考える必要を感じない、または考えたくない段階です。無理に決める必要はありません。'},
-  E:{title:'○ まだ決めなくてOK',text:'今の状態をひとつの言葉にしなくても大丈夫です。「どれとも言えない」も今の大切な答えです。'}
-};
-
+const readinessMap={A:{title:'🌱 話したい・入口探し中',text:'考えておきたい気持ちはあるけれど、「何から始めればいい？」が今の壁かもしれません。'},B:{title:'🧭 話し合い準備OK',text:'自分の考えがある程度まとまり、話したり準備したりする段階に進んでいます。ACPは一度で終わりではありません。気持ちや体調、暮らしが変われば、何度でも考え直し、話し直して大丈夫です。'},C:{title:'☁️ なんとかなる派',text:'「その時になれば伝わる」と感じている段階です。大切な人が同じ理解をしているか、一度だけ確かめてみるのもよさそうです。'},D:{title:'🌙 今はまだ',text:'今は考える必要を感じない、または考えたくない段階です。無理に決める必要はありません。'},E:{title:'○ まだ決めなくてOK',text:'今の状態をひとつの言葉にしなくても大丈夫です。「どれとも言えない」も今の大切な答えです。'}};
 const languageMap={A:'大切にしたいことは、かなり言葉になっている',B:'大切にしたいことは、なんとなく言葉になっている',C:'考えているけれど、まだ言葉にしにくい',D:'まだあまり考えたことがない',E:'まだ分からない',F:'今は考えたくない'};
 const sharingMap={A:'家族や身近な人と、すでに話したことがある',B:'まだ話していないが、話しておきたい',C:'必要になったら話せばいいと感じている',D:'あまり話したくない',E:'誰にも話したくない',F:'まだ分からない'};
-
-let current=0;
-const answers={};
-let rankedValues=[];
-
-const intro=document.getElementById('intro');
-const quiz=document.getElementById('quiz');
-const result=document.getElementById('result');
-const qnum=document.getElementById('qnum');
-const questionEl=document.getElementById('question');
-const questionNote=document.getElementById('questionNote');
-const body=document.getElementById('questionBody');
-const sectionKicker=document.getElementById('sectionKicker');
-const progressLabel=document.getElementById('progressLabel');
-const progressBar=document.getElementById('progressBar');
-const backBtn=document.getElementById('backBtn');
-const nextBtn=document.getElementById('nextBtn');
-const errorBox=document.getElementById('errorBox');
-
-function start(){intro.style.display='none';result.style.display='none';quiz.style.display='block';current=0;render();window.scrollTo({top:0,behavior:'smooth'});}
-
-document.getElementById('startBtn').addEventListener('click',start);
-
-function render(){
-  const q=questions[current];
-  sectionKicker.textContent=q.section;
-  qnum.textContent=`Q${current+1}`;
-  questionEl.textContent=q.text;
-  questionNote.textContent=q.note||'';
-  questionNote.style.display=q.note?'block':'none';
-  progressLabel.textContent=`${current+1} / ${questions.length}`;
-  progressBar.style.width=`${((current+1)/questions.length)*100}%`;
-  backBtn.style.visibility=current===0?'hidden':'visible';
-  nextBtn.textContent=current===questions.length-1?'結果を見る →':'次へ →';
-  errorBox.style.display='none';
-  body.innerHTML='';
-  if(q.kind==='values') renderValues(); else renderSingle(q);
-  updateNext();
-}
-
-function renderSingle(q){
-  const wrap=document.createElement('div');wrap.className='options';
-  let opts=q.custom||[
-    {key:'A',label:q.a},{key:'B',label:q.b},
-    {key:'C',label:'状況による',small:true},{key:'D',label:'わからない',small:true},{key:'E',label:'今は考えたくない',small:true}
-  ];
-  opts.forEach(opt=>{
-    const btn=document.createElement('button');
-    btn.type='button';btn.className='option'+(opt.small?' small':'')+(answers[current]===opt.key?' selected':'');
-    btn.innerHTML=`<strong>${opt.key}.</strong> ${escapeHtml(opt.label)}`;
-    btn.addEventListener('click',()=>{answers[current]=opt.key;renderSingleSelection(wrap,btn);updateNext();});
-    wrap.appendChild(btn);
-  });
-  body.appendChild(wrap);
-}
-
-function renderSingleSelection(wrap,selected){wrap.querySelectorAll('.option').forEach(x=>x.classList.toggle('selected',x===selected));}
-
-function renderValues(){
-  const help=document.createElement('div');help.className='rank-help';help.textContent='3つ選ぶと、選んだ順に 1位・2位・3位 になります。';body.appendChild(help);
-  const grid=document.createElement('div');grid.className='value-grid';
-  values.forEach((v,i)=>{
-    const btn=document.createElement('button');btn.type='button';btn.className='value-option';btn.dataset.index=i;
-    btn.innerHTML=`<span class="rank-badge"></span><span>${escapeHtml(v)}</span>`;
-    btn.addEventListener('click',()=>toggleValue(i));grid.appendChild(btn);
-  });
-  body.appendChild(grid);syncValueUI();
-}
-
-function toggleValue(i){
-  const at=rankedValues.indexOf(i);
-  if(at>=0){rankedValues.splice(at,1);} else if(rankedValues.length<3){rankedValues.push(i);} else {showError('3つまで選べます。選び直す場合は、選択中の項目を押して外してください。');return;}
-  syncValueUI();updateNext();errorBox.style.display='none';
-}
-
-function syncValueUI(){
-  document.querySelectorAll('.value-option').forEach(btn=>{
-    const i=Number(btn.dataset.index),rank=rankedValues.indexOf(i);
-    btn.classList.toggle('selected',rank>=0);
-    const badge=btn.querySelector('.rank-badge');if(badge) badge.textContent=rank>=0?String(rank+1):'';
-  });
-}
-
-function updateNext(){
-  const q=questions[current];
-  nextBtn.disabled=q.kind==='values'?rankedValues.length!==3:!answers[current];
-}
-
-function showError(msg){errorBox.textContent=msg;errorBox.style.display='block';}
-
-nextBtn.addEventListener('click',()=>{
-  const q=questions[current];
-  if(q.kind==='values'&&rankedValues.length!==3){showError('大切にしたいものを3つ選んでください。');return;}
-  if(q.kind!=='values'&&!answers[current]){showError('ひとつ選んでください。');return;}
-  if(current<questions.length-1){current++;render();window.scrollTo({top:0,behavior:'smooth'});} else {showResult();}
-});
-
-backBtn.addEventListener('click',()=>{if(current>0){current--;render();window.scrollTo({top:0,behavior:'smooth'});}});
-
-function axisResult(start,end,tieBreaker){
-  let sum=0,count=0;
-  for(let i=start;i<=end;i++){
-    if(answers[i]==='A'){sum++;count++;}
-    else if(answers[i]==='B'){sum--;count++;}
-  }
-  if(count<2) return null;
-  if(sum>0) return 1;if(sum<0) return -1;
-  if(answers[tieBreaker]==='A') return 1;if(answers[tieBreaker]==='B') return -1;
-  return null;
-}
-
-function showResult(){
-  quiz.style.display='none';result.style.display='block';
-  const life=axisResult(0,3,3),decision=axisResult(4,7,7),support=axisResult(8,11,11);
-  const key=`${life},${decision},${support}`;
-  const type=(life&&decision&&support)?typeMap[key]:null;
-  const animal=document.getElementById('resultAnimal'),name=document.getElementById('resultName'),desc=document.getElementById('resultDescription'),alert=document.getElementById('resultAlert');
-  if(type){animal.textContent=type.animal;name.textContent=type.name;desc.textContent=type.desc;alert.innerHTML=`<b>このタイプは「今の傾向」です。</b><br>${escapeHtml(type.watch)} 病気や状況が変われば、考え方が変わっても自然です。`;}
-  else{animal.textContent='🌿';name.textContent='今は、ひとつに決めなくてよさそう';desc.textContent='「状況による」「わからない」「今は考えたくない」が多かったり、考えが同じくらいに分かれています。';alert.innerHTML='<b>タイプが決まらないことも大切な結果です。</b><br>何がまだ分からないのかを知ることが、話し合いの入口になります。';}
-
-  const axisGrid=document.getElementById('axisGrid');axisGrid.innerHTML='';
-  const axisData=[
-    ['治療と暮らし',life===1?'可能性を試したい':life===-1?'負担・暮らしを重視':'まだ決めない'],
-    ['決め方',decision===1?'自分の希望を重視':decision===-1?'一緒に考えたい':'まだ決めない'],
-    ['頼り方',support===1?'家族・身近な人':support===-1?'専門職':'まだ決めない']
-  ];
-  axisData.forEach(([a,b])=>{const d=document.createElement('div');d.className='axis';d.innerHTML=`<small>${escapeHtml(a)}</small><b>${escapeHtml(b)}</b>`;axisGrid.appendChild(d);});
-
-  const list=document.getElementById('valuesList');list.innerHTML='';
-  rankedValues.forEach((idx,i)=>{const d=document.createElement('div');d.className='value-rank';d.innerHTML=`<span class="medal">${i+1}</span><b>${escapeHtml(values[idx])}</b>`;list.appendChild(d);});
-
-  const ready=readinessMap[answers[15]]||readinessMap.E;
-  document.getElementById('readinessBox').innerHTML=`<b>${escapeHtml(ready.title)}</b><p>${escapeHtml(ready.text)}</p>`;
-  document.getElementById('metaGrid').innerHTML=`<div class="meta-chip"><b>自分の中では</b><br>${escapeHtml(languageMap[answers[13]]||'まだ分からない')}</div><div class="meta-chip"><b>人に話すことは</b><br>${escapeHtml(sharingMap[answers[14]]||'まだ分からない')}</div>`;
-
-  window.__resultText=buildShareText(type,ready,life,decision,support);
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-
-function buildShareText(type,ready,life,decision,support){
-  const t=type?`${type.animal} ${type.name}`:'🌿 今はひとつに決めなくてよさそう';
-  const top=rankedValues.map((i,n)=>`${n+1}. ${values[i]}`).join('\n');
-  return `アノトキ価値観タイプチェック\n${t}\n\n大切にしたいこと\n${top}\n\n現在地：${ready.title}\n\n※医学的な診断ではなく、今の価値観を整理する試作ツールです。`;
-}
-
-document.getElementById('shareBtn').addEventListener('click',async()=>{
-  const text=window.__resultText||'';
-  try{
-    if(navigator.share){await navigator.share({title:'アノトキ価値観タイプチェック',text,url:location.href});}
-    else{await navigator.clipboard.writeText(text+'\n'+location.href);alert('結果をコピーしました。');}
-  }catch(e){}
-});
-document.getElementById('printBtn').addEventListener('click',()=>window.print());
-document.getElementById('restartBtn').addEventListener('click',()=>{Object.keys(answers).forEach(k=>delete answers[k]);rankedValues=[];result.style.display='none';intro.style.display='block';window.scrollTo({top:0,behavior:'smooth'});});
-
-function escapeHtml(str){return String(str).replace(/[&<>'"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]));}
+let current=0;const answers={};let rankedValues=[];
+const intro=document.getElementById('intro'),quiz=document.getElementById('quiz'),result=document.getElementById('result'),qnum=document.getElementById('qnum'),questionEl=document.getElementById('question'),questionNote=document.getElementById('questionNote'),body=document.getElementById('questionBody'),sectionKicker=document.getElementById('sectionKicker'),progressLabel=document.getElementById('progressLabel'),progressBar=document.getElementById('progressBar'),backBtn=document.getElementById('backBtn'),nextBtn=document.getElementById('nextBtn'),errorBox=document.getElementById('errorBox');
+function start(){intro.style.display='none';result.style.display='none';quiz.style.display='block';current=0;render();window.scrollTo({top:0,behavior:'smooth'})}document.getElementById('startBtn').addEventListener('click',start);
+function render(){const q=questions[current];sectionKicker.textContent=q.section;qnum.textContent=`Q${current+1}`;questionEl.textContent=q.text;questionNote.textContent=q.note||'';questionNote.style.display=q.note?'block':'none';progressLabel.textContent=`${current+1} / ${questions.length}`;progressBar.style.width=`${((current+1)/questions.length)*100}%`;backBtn.style.visibility=current===0?'hidden':'visible';nextBtn.textContent=current===questions.length-1?'結果を見る →':'次へ →';errorBox.style.display='none';body.innerHTML='';if(q.kind==='values')renderValues();else renderSingle(q);updateNext()}
+function renderSingle(q){const wrap=document.createElement('div');wrap.className='options';const opts=q.custom||[{key:'A',label:q.a},{key:'B',label:q.b},{key:'C',label:'状況による',small:true},{key:'D',label:'わからない',small:true},{key:'E',label:'今は考えたくない',small:true}];opts.forEach(opt=>{const btn=document.createElement('button');btn.type='button';btn.className='option'+(opt.small?' small':'')+(answers[current]===opt.key?' selected':'');btn.innerHTML=`<strong>${opt.key}.</strong> ${escapeHtml(opt.label)}`;btn.addEventListener('click',()=>{answers[current]=opt.key;renderSingleSelection(wrap,btn);updateNext()});wrap.appendChild(btn)});body.appendChild(wrap)}
+function renderSingleSelection(wrap,selected){wrap.querySelectorAll('.option').forEach(x=>x.classList.toggle('selected',x===selected))}
+function renderValues(){const help=document.createElement('div');help.className='rank-help';help.textContent='3つ選ぶと、選んだ順に 1位・2位・3位 になります。';body.appendChild(help);const grid=document.createElement('div');grid.className='value-grid';values.forEach((v,i)=>{const btn=document.createElement('button');btn.type='button';btn.className='value-option';btn.dataset.index=i;btn.innerHTML=`<span class="rank-badge"></span><span>${escapeHtml(v)}</span>`;btn.addEventListener('click',()=>toggleValue(i));grid.appendChild(btn)});body.appendChild(grid);syncValueUI()}
+function toggleValue(i){const at=rankedValues.indexOf(i);if(at>=0)rankedValues.splice(at,1);else if(rankedValues.length<3)rankedValues.push(i);else{showError('3つまで選べます。選び直す場合は、選択中の項目を押して外してください。');return}syncValueUI();updateNext();errorBox.style.display='none'}
+function syncValueUI(){document.querySelectorAll('.value-option').forEach(btn=>{const i=Number(btn.dataset.index),rank=rankedValues.indexOf(i);btn.classList.toggle('selected',rank>=0);const badge=btn.querySelector('.rank-badge');if(badge)badge.textContent=rank>=0?String(rank+1):''})}
+function updateNext(){const q=questions[current];nextBtn.disabled=q.kind==='values'?rankedValues.length!==3:!answers[current]}function showError(msg){errorBox.textContent=msg;errorBox.style.display='block'}
+nextBtn.addEventListener('click',()=>{const q=questions[current];if(q.kind==='values'&&rankedValues.length!==3){showError('大切にしたいものを3つ選んでください。');return}if(q.kind!=='values'&&!answers[current]){showError('ひとつ選んでください。');return}if(current<questions.length-1){current++;render();window.scrollTo({top:0,behavior:'smooth'})}else showResult()});backBtn.addEventListener('click',()=>{if(current>0){current--;render();window.scrollTo({top:0,behavior:'smooth'})}});
+function axisResult(start,end,tieBreaker){let sum=0,count=0;for(let i=start;i<=end;i++){if(answers[i]==='A'){sum++;count++}else if(answers[i]==='B'){sum--;count++}}if(count<2)return null;if(sum>0)return 1;if(sum<0)return-1;if(answers[tieBreaker]==='A')return 1;if(answers[tieBreaker]==='B')return-1;return null}
+function showResult(){quiz.style.display='none';result.style.display='block';const life=axisResult(0,3,3),decision=axisResult(4,7,7),support=axisResult(8,11,11),key=`${life},${decision},${support}`,type=(life&&decision&&support)?typeMap[key]:null;const visual=document.getElementById('resultVisual'),image=document.getElementById('resultImage'),animal=document.getElementById('resultAnimal'),name=document.getElementById('resultName'),tagline=document.getElementById('resultTagline'),desc=document.getElementById('resultDescription'),alertBox=document.getElementById('resultAlert');
+if(type){image.src=type.image;image.alt=`${type.name}のイラスト`;visual.style.display='block';animal.style.display='none';name.textContent=type.name;tagline.textContent=type.tagline;desc.textContent=type.desc;alertBox.innerHTML=`<b>このタイプは「今の傾向」です。</b><br>${escapeHtml(type.watch)} 病気や状況が変われば、考え方が変わっても自然です。`}else{visual.style.display='none';image.removeAttribute('src');animal.style.display='block';animal.textContent='🌿';name.textContent='今は、ひとつに決めなくてよさそう';tagline.textContent='まだ決めないことも、今の大切な答え。';desc.textContent='「状況による」「わからない」「今は考えたくない」が多かったり、考えが同じくらいに分かれています。';alertBox.innerHTML='<b>タイプが決まらないことも大切な結果です。</b><br>何がまだ分からないのかを知ることが、話し合いの入口になります。'}
+const axisGrid=document.getElementById('axisGrid');axisGrid.innerHTML='';[['治療と暮らし',life===1?'可能性を試したい':life===-1?'負担・暮らしを重視':'まだ決めない'],['決め方',decision===1?'自分の希望を重視':decision===-1?'一緒に考えたい':'まだ決めない'],['頼り方',support===1?'家族・身近な人':support===-1?'専門職':'まだ決めない']].forEach(([a,b])=>{const d=document.createElement('div');d.className='axis';d.innerHTML=`<small>${escapeHtml(a)}</small><b>${escapeHtml(b)}</b>`;axisGrid.appendChild(d)});
+const list=document.getElementById('valuesList');list.innerHTML='';rankedValues.forEach((idx,i)=>{const d=document.createElement('div');d.className='value-rank';d.innerHTML=`<span class="medal">${i+1}</span><b>${escapeHtml(values[idx])}</b>`;list.appendChild(d)});
+const ready=readinessMap[answers[15]]||readinessMap.E;document.getElementById('readinessBox').innerHTML=`<b>${escapeHtml(ready.title)}</b><p>${escapeHtml(ready.text)}</p>`;document.getElementById('metaGrid').innerHTML=`<div class="meta-chip"><b>自分の中では</b><br>${escapeHtml(languageMap[answers[13]]||'まだ分からない')}</div><div class="meta-chip"><b>人に話すことは</b><br>${escapeHtml(sharingMap[answers[14]]||'まだ分からない')}</div>`;window.__resultText=buildShareText(type,ready);window.scrollTo({top:0,behavior:'smooth'})}
+function buildShareText(type,ready){const t=type?`${type.animal} ${type.name}`:'🌿 今はひとつに決めなくてよさそう',top=rankedValues.map((i,n)=>`${n+1}. ${values[i]}`).join('\n');return `アノトキ価値観タイプチェック\n${t}\n${type?type.tagline:''}\n\n大切にしたいこと\n${top}\n\n現在地：${ready.title}\n\n※医学的な診断ではなく、今の価値観を整理する試作ツールです。`}
+document.getElementById('shareBtn').addEventListener('click',async()=>{const text=window.__resultText||'';try{if(navigator.share)await navigator.share({title:'アノトキ価値観タイプチェック',text,url:location.href});else{await navigator.clipboard.writeText(text+'\n'+location.href);alert('結果をコピーしました。')}}catch(e){}});document.getElementById('printBtn').addEventListener('click',()=>window.print());document.getElementById('restartBtn').addEventListener('click',()=>{Object.keys(answers).forEach(k=>delete answers[k]);rankedValues=[];result.style.display='none';intro.style.display='block';window.scrollTo({top:0,behavior:'smooth'})});
+function escapeHtml(str){return String(str).replace(/[&<>'"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]))}
 </script>
 </body>
 </html>
