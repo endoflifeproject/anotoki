@@ -35,6 +35,58 @@
 
 (function(){
   var main=document.querySelector('main');
+  if(!main||document.querySelector('.home-community-preview')) return;
+
+  var seedThreads=[
+    {scene:'病院で治療',cat:'延命治療',kind:'意見',role:'本人として',title:'全力で延命してほしいと思うのは少数派ですか？',body:'寝たきりになっても、治療できることがあるならできるだけやってほしいと思っています。'},
+    {scene:'施設・介護',cat:'胃ろう',kind:'体験',role:'家族・身近な人として',title:'親の胃ろうを選ばなかったこと、今でも時々迷います',body:'認知症が進んだ母に胃ろうを作るかどうか家族で話し合い、作らない選択をしました。'},
+    {scene:'急変・救急',cat:'人工呼吸器',kind:'質問',role:'本人として',title:'人工呼吸器をつけると、実際の生活はどう変わりますか？',body:'そもそもどんな状態で使うものなのか、その後の生活がどうなるのかを知りたいです。'},
+    {scene:'病院で治療',cat:'透析',kind:'意見',role:'家族・身近な人として',title:'透析を始めない選択について家族と意見が割れています',body:'本人は「もう通院は増やしたくない」と話しています。家族の中で意見が分かれています。'}
+  ];
+  var localThreads=[];
+  try{
+    var saved=JSON.parse(localStorage.getItem('anotoki-community-v1')||localStorage.getItem('anotoki-community-v0')||'[]');
+    if(Array.isArray(saved)) localThreads=saved;
+  }catch(e){}
+  var previewThreads=localThreads.concat(seedThreads).slice(0,4);
+  function esc(s){return String(s||'').replace(/[&<>'\"]/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','\"':'&quot;'}[ch]})}
+
+  var section=document.createElement('section');
+  section.className='home-community-preview';
+  section.setAttribute('aria-labelledby','home-community-title');
+  section.innerHTML='\
+    <div class="home-community-inner">\
+      <div class="home-community-head">\
+        <div>\
+          <span class="home-community-kicker">みんなの声 / COMMUNITY</span>\
+          <h2 id="home-community-title">みんなは、どう考えてる？</h2>\
+          <p>延命、胃ろう、人工呼吸器、透析。正解を決める場所ではなく、違う考え方に出会う場所。</p>\
+        </div>\
+        <a class="home-community-more" href="community.html">掲示板をもっと見る <span>→</span></a>\
+      </div>\
+      <div class="home-community-grid">'+previewThreads.map(function(t){return '\
+        <a class="home-community-card" href="community.html">\
+          <div class="home-community-tags"><span class="scene">'+esc(t.scene||'場面を限定しない')+'</span><span class="cat">'+esc(t.cat||'その他')+'</span><span class="kind">'+esc(t.kind||'投稿')+'</span></div>\
+          <h3>'+esc(t.title)+'</h3>\
+          <p>'+esc(t.body)+'</p>\
+          <div class="home-community-meta"><span>'+esc(t.role||'匿名')+'</span><b>読む →</b></div>\
+        </a>';}).join('')+'\
+      </div>\
+      <div class="home-community-foot">\
+        <span>延命を希望する考えも、希望しない考えも、まだ分からないという考えも。</span>\
+        <a href="community.html">新しい投稿をしてみる →</a>\
+      </div>\
+    </div>';
+  main.insertBefore(section,main.firstElementChild);
+
+  var style=document.createElement('style');
+  style.textContent='\
+.home-community-preview{background:#eee9dc;border-bottom:1px solid #d4ccbd;padding:46px 28px 42px}.home-community-inner{max-width:1280px;margin:0 auto}.home-community-head{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:18px}.home-community-kicker{display:inline-flex;border-radius:999px;padding:5px 10px;background:#e0ead0;border:1px solid #b8c996;color:#4b6725;font-size:8px;font-weight:900;letter-spacing:.08em}.home-community-head h2{font-family:"Yu Mincho","Hiragino Mincho ProN",serif;color:#203f54;font-size:clamp(24px,3vw,34px);line-height:1.45;margin:8px 0 5px;font-weight:700}.home-community-head p{font-size:11px;color:#56656b;margin:0}.home-community-more{display:inline-flex;align-items:center;gap:12px;border:1px solid #6d8f31;border-radius:999px;background:#789b36;color:#fff;padding:10px 16px;font-size:10px;font-weight:900;white-space:nowrap;box-shadow:0 6px 14px rgba(83,112,38,.16)}.home-community-more:hover{background:#66862f;transform:translateY(-1px)}.home-community-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.home-community-card{display:block;background:#fffdf7;border:1px solid #c9c1ae;border-radius:16px;padding:16px 17px;box-shadow:0 4px 13px rgba(62,55,39,.07);transition:.18s}.home-community-card:hover{transform:translateY(-2px);box-shadow:0 10px 20px rgba(62,55,39,.12);border-color:#9fa88a}.home-community-tags{display:flex;gap:6px;flex-wrap:wrap}.home-community-tags span{font-size:8px;font-weight:900;border-radius:999px;padding:3px 7px}.home-community-tags .scene{background:#e3edf2;color:#315870;border:1px solid #b9cdd8}.home-community-tags .cat{background:#eaf1dc;color:#49682f;border:1px solid #b9ca96}.home-community-tags .kind{background:#f3eadc;color:#6b5132;border:1px solid #d9c5a8}.home-community-card h3{font-size:15px;line-height:1.55;color:#243b4a;margin:9px 0 6px;font-weight:800}.home-community-card p{font-size:10px;line-height:1.8;color:#526066;margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.home-community-meta{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px;padding-top:10px;border-top:1px solid #e3dccf;color:#667279;font-size:9px}.home-community-meta b{color:#56752d;font-size:9px}.home-community-foot{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-top:14px;border:1px solid #cfc6b5;border-radius:13px;background:#f7f2e5;padding:11px 13px;color:#59666b;font-size:9px}.home-community-foot a{color:#315f78;font-weight:900;white-space:nowrap}@media(max-width:800px){.home-community-preview{padding:34px 16px}.home-community-head{display:block}.home-community-more{margin-top:13px}.home-community-grid{grid-template-columns:1fr}.home-community-foot{display:block}.home-community-foot a{display:block;margin-top:6px}}';
+  document.head.appendChild(style);
+})();
+
+(function(){
+  var main=document.querySelector('main');
   if(!main||document.querySelector('.home-life-preview')) return;
   var flow=main.querySelector('.flow');
   var howto=flow?flow.closest('.section'):null;
