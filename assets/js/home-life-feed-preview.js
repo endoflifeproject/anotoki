@@ -53,12 +53,28 @@
 })();
 
 (function(){
+  var hero=document.querySelector('.hero');
   var heroActions=document.querySelector('.hero-actions');
   if(heroActions){
-    heroActions.innerHTML='<a class="primary" href="values_type_check.html">まず価値観を整理する <span>›</span></a><a class="secondary" href="#concerns">気になることから探す <span>›</span></a>';
+    heroActions.innerHTML='<a class="secondary" href="#concerns">気になることから探す <span>›</span></a>';
   }
   var heroLead=document.querySelector('.hero-lead');
   if(heroLead){heroLead.innerHTML='もしもの医療や介護を、いきなり決めなくていい。<br>まず自分の価値観を知って、生活・体験・専門情報へ。';}
+
+  if(hero&&!hero.querySelector('.hero-values-cta')){
+    hero.classList.add('hero-no-curve');
+    var valuesCta=document.createElement('a');
+    valuesCta.className='hero-values-cta';
+    valuesCta.href='values_type_check.html';
+    valuesCta.setAttribute('aria-label','価値観タイプ診断をはじめる');
+    valuesCta.innerHTML='<img src="assets/values-type/start_botton.png" alt="価値観タイプ診断">';
+    hero.appendChild(valuesCta);
+
+    var heroStyle=document.createElement('style');
+    heroStyle.textContent='\
+.hero.hero-no-curve:after{display:none!important}.hero-values-cta{position:absolute;z-index:5;right:3.2%;top:25%;width:min(720px,46vw);display:block;line-height:0;filter:drop-shadow(0 14px 18px rgba(24,61,89,.13));transition:transform .2s ease,filter .2s ease}.hero-values-cta img{display:block;width:100%;height:auto}.hero-values-cta:hover{transform:translateY(-5px) scale(1.015);filter:drop-shadow(0 18px 22px rgba(24,61,89,.2))}.hero-values-cta:focus-visible{outline:4px solid rgba(255,255,255,.95);outline-offset:7px;border-radius:26px}.hero-copy{position:relative;z-index:6;width:min(620px,46%)}@media(max-width:1080px){.hero-values-cta{right:2%;top:28%;width:min(600px,45vw)}.hero-copy{width:min(560px,50%)}}@media(max-width:760px){.hero{min-height:760px;align-items:flex-start}.hero-inner{padding-bottom:250px}.hero-copy{width:100%;max-width:560px}.hero-values-cta{top:auto;left:16px;right:16px;bottom:34px;width:auto;max-width:620px;margin:auto}.hero-actions{max-width:280px}}';
+    document.head.appendChild(heroStyle);
+  }
 
   var nav=document.querySelector('.site-header .nav');
   if(nav){
