@@ -1,55 +1,6 @@
 (function(){
-  var main=document.querySelector('main');
-  if(!main||document.querySelector('.home-main-route')) return;
-
-  var firstSection=main.firstElementChild;
-  var route=document.createElement('section');
-  route.className='home-main-route';
-  route.setAttribute('aria-labelledby','home-route-title');
-  route.innerHTML='\
-    <div class="home-route-inner">\
-      <div class="home-route-head">\
-        <span class="home-route-kicker">START HERE</span>\
-        <h2 id="home-route-title">まず、自分が何を大切にしたいか知る。</h2>\
-        <p>答えを決めるための診断ではありません。今の価値観を整理して、その結果から「生活の実際」「みんなの声」「専門情報」へ進みます。</p>\
-      </div>\
-      <div class="home-route-grid">\
-        <a class="home-route-card home-route-first" href="values_type_check.html">\
-          <span class="home-route-number">1</span>\
-          <small>16 QUESTIONS</small>\
-          <h3>価値観タイプチェック</h3>\
-          <p>治療と暮らし、決め方、頼りたい人。今の自分の傾向を整理します。</p>\
-          <strong>診断をはじめる <b>→</b></strong>\
-        </a>\
-        <div class="home-route-card home-route-result">\
-          <span class="home-route-number">2</span>\
-          <small>YOUR RESULT</small>\
-          <h3>結果を見て、気になることを見つける</h3>\
-          <p>タイプだけでなく、大切にしたいことTOP3や「今どこまで考えられているか」も表示します。</p>\
-          <strong>治療をおすすめする結果ではありません</strong>\
-        </div>\
-        <div class="home-route-card home-route-next">\
-          <span class="home-route-number">3</span>\
-          <small>CHOOSE YOUR NEXT STEP</small>\
-          <h3>結果から、次に知りたい場所へ</h3>\
-          <div class="home-route-links">\
-            <a href="life_scenarios.html">その選択の先の暮らし <b>→</b></a>\
-            <a href="community.html">みんなの意見・体験 <b>→</b></a>\
-            <a href="#trusted-info">専門・公的サイト <b>→</b></a>\
-          </div>\
-        </div>\
-      </div>\
-      <div class="home-route-foot">結果はゴールではなく、<b>「何を知れば自分で考えやすくなるか」への入口</b>です。</div>\
-    </div>';
-  if(firstSection) main.insertBefore(route,firstSection); else main.appendChild(route);
-
   var trusted=document.querySelector('.trusted');
   if(trusted) trusted.id='trusted-info';
-
-  var style=document.createElement('style');
-  style.textContent='\
-.home-main-route{background:#efede5;border-top:1px solid #d9d2c3;border-bottom:1px solid #d9d2c3;padding:48px 28px}.home-route-inner{max-width:1200px;margin:0 auto}.home-route-head{text-align:center;max-width:780px;margin:0 auto 24px}.home-route-kicker{display:inline-flex;padding:5px 11px;border-radius:999px;background:#78943f;color:#fff;font-size:9px;font-weight:900;letter-spacing:.12em}.home-route-head h2{font-family:"Yu Mincho","Hiragino Mincho ProN",serif;color:#203b48;font-size:clamp(25px,3.5vw,36px);line-height:1.5;margin:10px 0 8px;font-weight:700}.home-route-head p{font-size:12px;color:#465653;margin:0;line-height:1.9}.home-route-grid{display:grid;grid-template-columns:1fr 1fr 1.2fr;gap:14px}.home-route-card{position:relative;display:flex;flex-direction:column;min-height:245px;border:1px solid #cfc8b8;border-radius:18px;background:#fffdf8;padding:22px;color:#293936;box-shadow:0 6px 18px rgba(55,55,45,.07)}a.home-route-card{transition:.2s}a.home-route-card:hover{transform:translateY(-3px);box-shadow:0 12px 26px rgba(55,55,45,.11)}.home-route-first{border-top:6px solid #78943f}.home-route-result{border-top:6px solid #d79c3d}.home-route-next{border-top:6px solid #315f75}.home-route-number{position:absolute;right:16px;top:13px;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:#ece8dc;color:#52615d;font:700 15px Georgia,serif}.home-route-card small{font-size:8px;font-weight:900;letter-spacing:.12em;color:#6e7b77}.home-route-card h3{font-family:"Yu Mincho","Hiragino Mincho ProN",serif;font-size:18px;line-height:1.55;color:#203b48;margin:8px 0}.home-route-card p{font-size:10px;line-height:1.9;color:#53615e;margin:0 0 14px}.home-route-card>strong{margin-top:auto;font-size:10px;color:#5f7933}.home-route-card>strong b{font-size:15px;margin-left:5px}.home-route-result>strong{color:#87611f}.home-route-links{display:grid;gap:7px;margin-top:auto}.home-route-links a{display:flex;justify-content:space-between;align-items:center;border:1px solid #cfc8b8;border-radius:10px;background:#f8f5ed;padding:9px 11px;color:#264b5e;font-size:10px;font-weight:800}.home-route-links a:hover{background:#eef3df;border-color:#aabe78}.home-route-links b{font-size:14px}.home-route-foot{text-align:center;margin-top:17px;padding:11px 14px;border:1px solid #d7d0c1;border-radius:12px;background:#f8f5ee;color:#52605d;font-size:10px}.home-route-foot b{color:#2f4742}@media(max-width:900px){.home-route-grid{grid-template-columns:1fr}.home-route-card{min-height:auto}.home-route-result{min-height:190px}}@media(max-width:700px){.home-main-route{padding:38px 16px}.home-route-head{text-align:left}.home-route-head h2{font-size:26px}.home-route-head p{font-size:11px}}';
-  document.head.appendChild(style);
 })();
 
 (function(){
